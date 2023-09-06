@@ -1,0 +1,97 @@
+﻿@page "/prioridades"
+@using System.Linq
+@using RegistroPrioridad2.Models
+
+<h3>Prioridades</h3>
+
+<EditForm Model="@nuevaPrioridad" OnValidSubmit="@AgregarEditarPrioridad">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Id">ID</label>
+        <InputNumber id="Id" class="form-control" @bind-Value="nuevaPrioridad.PrioridadId" />
+        <ValidationMessage For="@(() => nuevaPrioridad.PrioridadId)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Descripcion">Descripción</label>
+        <InputText id="Descripcion" class="form-control" @bind-Value="nuevaPrioridad.Descripcion" />
+        <ValidationMessage For="@(() => nuevaPrioridad.Descripcion)" />
+    </div>
+
+    <div class="form-group">
+        <label for="DiasCompromiso">Días Compromiso</label>
+        <InputNumber id="DiasCompromiso" class="form-control" @bind-Value="nuevaPrioridad.DiasCompromiso" />
+        <ValidationMessage For="@(() => nuevaPrioridad.DiasCompromiso)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" @onclick="ResetearFormulario" class="btn btn-secondary ml-2">Nuevo</button>
+
+</EditForm>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Días Compromiso</th>
+            <th>Prioridad</th> 
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prioridad in prioridades.OrderBy(p => p.PrioridadId))
+        {
+            <tr>
+                <td>@prioridad.PrioridadId</td>
+                <td>@prioridad.Descripcion</td>
+                <td>@prioridad.DiasCompromiso</td>
+                <td>@prioridad.NivelPrioridad</td>
+                <td>
+                    <button @onclick="() => EliminarPrioridad(prioridad.PrioridadId)" class="btn btn-danger btn-sm">Eliminar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@code {
+    private List<Prioridad> prioridades = new List<Prioridad>();
+    private Prioridad nuevaPrioridad = new Prioridad();
+
+    private void AgregarEditarPrioridad()
+    {
+        if (prioridades.Any(p => p.Descripcion == nuevaPrioridad.Descripcion))
+        {
+            return;
+        }
+
+        if (prioridades.Any(p => p.PrioridadId == nuevaPrioridad.PrioridadId))
+        {
+            return;
+        }
+
+        prioridades.Add(nuevaPrioridad);
+        nuevaPrioridad = new Prioridad(); 
+    }
+
+    private void EliminarPrioridad(int idAEliminar)
+    {
+        var prioridadAEliminar = prioridades.FirstOrDefault(p => p.PrioridadId == idAEliminar);
+        if (prioridadAEliminar != null)
+        {
+            prioridades.Remove(prioridadAEliminar);
+        }
+    }
+
+    private void ResetearFormulario()
+    {
+        nuevaPrioridad = new Prioridad();
+    }
+
+}
+
+
+

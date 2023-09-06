@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\RegistroPrioridad2.props" />
+</Project>
