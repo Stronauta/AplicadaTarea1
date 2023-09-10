@@ -7,7 +7,7 @@ namespace RegistroPrioridad2.Models
         [Key]
         public int PrioridadId { get; set; }
 
-        [Required(ErrorMessage = "La descripción es requerida")]
+        [Required(ErrorMessage = "La descripción es requeridaaaaa")]
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "Los días compromiso son requeridos")]
